@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import '../models/attendee.dart';
 
 class AttendeeList extends StatelessWidget {
-  final List<Attendee> attendees;
   final MediaQueryData mediaQuery;
+  final List<Attendee> attendees;
+  final Function delAttendee;
   final Function incrScore;
   final Function decrScore;
-  final Function delScore;
 
   const AttendeeList(
     this.mediaQuery,
     this.attendees,
+    this.delAttendee,
     this.incrScore,
-    this.decrScore,
-    this.delScore, {
+    this.decrScore, {
     Key? key,
   }) : super(key: key);
 
@@ -26,28 +26,37 @@ class AttendeeList extends StatelessWidget {
       itemCount: attendees.length,
       itemBuilder: (ctx, index) {
         return Card(
+          elevation: 3,
           child: ExpansionTile(
             title: Row(
               children: [
                 SizedBox(
-                    width: mediaQuery.size.width * 0.5,
-                    child: Text(
-                      attendees[index].name,
-                      style: Theme.of(context).textTheme.headline5,
-                    )),
+                  width: mediaQuery.size.width * 0.4,
+                  child: Text(
+                    attendees[index].name,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+                IconButton(
+                  padding: EdgeInsets.all(mediaQuery.size.width * 0.05),
+                  onPressed: () => decrScore(attendees[index]),
+                  icon: const Icon(Icons.remove),
+                  iconSize: mediaQuery.size.width * 0.1,
+                  color: Colors.red,
+                ),
                 SizedBox(
-                  width: mediaQuery.size.width * 0.15,
+                  width: mediaQuery.size.width * 0.05,
                   child: Text(
                     attendees[index].score.toString(),
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ),
-                SizedBox(
-                  width: mediaQuery.size.width * 0.15,
-                  child: Text(
-                    '${attendees[index].rank.toString()}.',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
+                IconButton(
+                  padding: EdgeInsets.all(mediaQuery.size.width * 0.025),
+                  onPressed: () => incrScore(attendees[index]),
+                  icon: const Icon(Icons.add),
+                  iconSize: mediaQuery.size.width * 0.1,
+                  color: Colors.green,
                 ),
               ],
             ),
@@ -55,39 +64,37 @@ class AttendeeList extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding:
-                        EdgeInsets.only(right: mediaQuery.size.width * 0.25),
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.4,
                     child: Row(
-                      children: <Widget>[
-                        IconButton(
+                      children: [
+                        Padding(
                           padding: EdgeInsets.only(
-                            right: mediaQuery.size.width * 0.025,
+                              right: mediaQuery.size.width * 0.025),
+                          child: Text(
+                            'Rang: ',
+                            style: Theme.of(context).textTheme.headline3,
                           ),
-                          onPressed: () => incrScore(attendees[index]),
-                          icon: const Icon(Icons.add_circle),
-                          iconSize: mediaQuery.size.width * 0.1,
-                          color: Colors.green,
                         ),
-                        IconButton(
-                          padding: EdgeInsets.only(
-                            left: mediaQuery.size.width * 0.025,
-                          ),
-                          onPressed: () => decrScore(attendees[index]),
-                          icon: const Icon(Icons.remove_circle),
-                          iconSize: mediaQuery.size.width * 0.1,
-                          color: Colors.red,
+                        Text(
+                          '${attendees[index].rank.toString()}.',
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                       ],
                     ),
                   ),
-                  IconButton(
+                  Padding(
                     padding:
                         EdgeInsets.only(left: mediaQuery.size.width * 0.25),
-                    onPressed: () => delScore(attendees[index]),
-                    icon: const Icon(Icons.delete),
-                    iconSize: mediaQuery.size.width * 0.1,
-                    color: Theme.of(context).errorColor,
+                    child: TextButton.icon(
+                      onPressed: () => delAttendee(attendees[index]),
+                      icon: const Icon(Icons.delete),
+                      label: const Text('Delete'),
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(
+                            Theme.of(context).errorColor),
+                      ),
+                    ),
                   )
                 ],
               ),

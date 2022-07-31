@@ -14,24 +14,9 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   final List<Attendee> _attendees = [
-    Attendee('Sebastian'),
-    Attendee('Theo'),
-    Attendee('Vivien'),
-    Attendee('Sebastian'),
-    Attendee('Theo'),
-    Attendee('Vivien'),
-    Attendee('Sebastian'),
-    Attendee('Theo'),
-    Attendee('Vivien'),
-    Attendee('Sebastian'),
-    Attendee('Theo'),
-    Attendee('Vivien'),
-    Attendee('Sebastian'),
-    Attendee('Theo'),
-    Attendee('Vivien'),
-    Attendee('Sebastian'),
-    Attendee('Theo'),
-    Attendee('Vivien'),
+    Attendee(1, 'Sebastian'),
+    Attendee(2, 'Theo'),
+    Attendee(3, 'Vivien'),
   ];
   List<Attendee> _rankedAttendees = [];
 
@@ -48,7 +33,7 @@ class _TabsScreenState extends State<TabsScreen> {
   }
 
   void _addAttendee(String name) {
-    final newAttendee = Attendee(name);
+    final newAttendee = Attendee(_attendees.length + 1, name);
 
     setState(() {
       _attendees.add(newAttendee);
@@ -95,11 +80,10 @@ class _TabsScreenState extends State<TabsScreen> {
         rank++;
       }
       previousScore = a.score;
-      a.rank = rank;
-    }
-
-    for (int i = 0; i < _rankedAttendees.length; i++) {
-      attendeeList[i].rank = _rankedAttendees[i].rank;
+      // backsync. to attendeeList
+      var matchingAttendee =
+          attendeeList.firstWhere((attendee) => attendee.id == a.id);
+      matchingAttendee.rank = rank;
     }
   }
 

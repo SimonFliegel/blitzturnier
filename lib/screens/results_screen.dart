@@ -76,29 +76,30 @@ class _ResultsScreenState extends State<ResultsScreen> {
                   parent: AlwaysScrollableScrollPhysics()),
               itemCount: widget.rankedAttendees.length,
               itemBuilder: (context, index) {
-                return Card(
-                  elevation: 3,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.all(widget.mediaQuery.size.height * 0.015),
-                    child: ListTile(
-                      leading: Padding(
-                        padding: EdgeInsets.only(
-                            right: widget.mediaQuery.size.width * 0.075),
-                        child: buildCircleAvatar(index),
-                      ),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            widget.rankedAttendees[index].name,
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          Text(
-                            widget.rankedAttendees[index].score.toString(),
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                        ],
+                return SizedBox(
+                  height: widget.mediaQuery.size.height * 0.146,
+                  child: Card(
+                    elevation: 3,
+                    child: Center(
+                      child: ListTile(
+                        leading: Padding(
+                          padding: EdgeInsets.only(
+                              right: widget.mediaQuery.size.width * 0.075),
+                          child: buildCircleAvatar(index),
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              widget.rankedAttendees[index].name,
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                            Text(
+                              widget.rankedAttendees[index].score.toString(),
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

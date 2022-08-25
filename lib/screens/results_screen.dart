@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/attendee.dart';
+import '../providers/attendee.dart';
 
 class ResultsScreen extends StatefulWidget {
   final MediaQueryData mediaQuery;
-  List<Attendee> rankedAttendees;
 
-  ResultsScreen(
-    this.mediaQuery,
-    this.rankedAttendees, {
+  const ResultsScreen(
+    this.mediaQuery, {
     Key? key,
   }) : super(key: key);
 
@@ -17,13 +16,15 @@ class ResultsScreen extends StatefulWidget {
 }
 
 class _ResultsScreenState extends State<ResultsScreen> {
-  List<bool> isSelected = [false];
-
+  bool isReversed = false;
   @override
   Widget build(BuildContext context) {
-    Widget buildCircleAvatar(int index) {
+    var rankedAttendees =
+        Provider.of<Attendees>(context, listen: false).rankedAttendees;
+
+    Widget buildCircleAvatar(List<Attendee> rankedAttendees, int index) {
       String? img;
-      switch (widget.rankedAttendees[index].rank) {
+      switch (rankedAttendees[index].rank) {
         case 1:
           img = 'assets/images/firstplace.png';
           break;
@@ -48,14 +49,52 @@ class _ResultsScreenState extends State<ResultsScreen> {
               child: FittedBox(
                 fit: BoxFit.cover,
                 child: Text(
-                  ' ${widget.rankedAttendees[index].rank.toString()}.',
+                  ' ${rankedAttendees[index].rank.toString()}.',
                   style: Theme.of(context).textTheme.headline2,
                 ),
               ),
             );
     }
 
-    return widget.rankedAttendees.isNotEmpty
+    Widget buildResultsList(List<Attendee> rankedAttendees) {
+      return ListView.builder(
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
+        itemCount: rankedAttendees.length,
+        itemBuilder: (context, index) {
+          return SizedBox(
+            height: widget.mediaQuery.size.height * 0.146,
+            child: Card(
+              elevation: 3,
+              child: Center(
+                child: ListTile(
+                  leading: Padding(
+                    padding: EdgeInsets.only(
+                        right: widget.mediaQuery.size.width * 0.075),
+                    child: buildCircleAvatar(rankedAttendees, index),
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        rankedAttendees[index].name,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      Text(
+                        rankedAttendees[index].score.toString(),
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    return rankedAttendees.isNotEmpty
         ? Scaffold(
             appBar: AppBar(
               title: const Text('Ergebnisse'),
@@ -64,49 +103,15 @@ class _ResultsScreenState extends State<ResultsScreen> {
                   icon: const Icon(Icons.import_export),
                   onPressed: () {
                     setState(() {
-                      widget.rankedAttendees =
-                          widget.rankedAttendees.reversed.toList();
+                      isReversed = !isReversed;
                     });
                   },
                 ),
               ],
             ),
-            body: ListView.builder(
-              physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
-              itemCount: widget.rankedAttendees.length,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  height: widget.mediaQuery.size.height * 0.146,
-                  child: Card(
-                    elevation: 3,
-                    child: Center(
-                      child: ListTile(
-                        leading: Padding(
-                          padding: EdgeInsets.only(
-                              right: widget.mediaQuery.size.width * 0.075),
-                          child: buildCircleAvatar(index),
-                        ),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              widget.rankedAttendees[index].name,
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            Text(
-                              widget.rankedAttendees[index].score.toString(),
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          )
+            body: isReversed
+                ? buildResultsList(rankedAttendees.reversed.toList())
+                : buildResultsList(rankedAttendees))
         : Scaffold(
             appBar: AppBar(
               title: const Text('Ergebnisse'),

@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/attendee.dart';
+import '../providers/attendee.dart';
 
 class AttendeeList extends StatelessWidget {
   final MediaQueryData mediaQuery;
-  final List<Attendee> attendees;
-  final Function delAttendee;
-  final Function incrScore;
-  final Function decrScore;
 
   const AttendeeList(
-    this.mediaQuery,
-    this.attendees,
-    this.delAttendee,
-    this.incrScore,
-    this.decrScore, {
+    this.mediaQuery, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final attendeeData = Provider.of<Attendees>(context);
+    final attendees = attendeeData.attendees;
     return ListView.builder(
       physics:
           const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -39,7 +34,7 @@ class AttendeeList extends StatelessWidget {
                 ),
                 IconButton(
                   padding: EdgeInsets.all(mediaQuery.size.width * 0.05),
-                  onPressed: () => decrScore(attendees[index]),
+                  onPressed: () => attendeeData.decreaseScore(attendees[index]),
                   icon: const Icon(Icons.remove),
                   iconSize: mediaQuery.size.width * 0.1,
                   color: Colors.red,
@@ -53,7 +48,7 @@ class AttendeeList extends StatelessWidget {
                 ),
                 IconButton(
                   padding: EdgeInsets.all(mediaQuery.size.width * 0.025),
-                  onPressed: () => incrScore(attendees[index]),
+                  onPressed: () => attendeeData.increaseScore(attendees[index]),
                   icon: const Icon(Icons.add),
                   iconSize: mediaQuery.size.width * 0.1,
                   color: Colors.green,
@@ -87,7 +82,8 @@ class AttendeeList extends StatelessWidget {
                     padding:
                         EdgeInsets.only(left: mediaQuery.size.width * 0.25),
                     child: TextButton.icon(
-                      onPressed: () => delAttendee(attendees[index]),
+                      onPressed: () =>
+                          attendeeData.deleteAttendee(attendees[index]),
                       icon: const Icon(Icons.delete),
                       label: const Text('Delete'),
                       style: ButtonStyle(

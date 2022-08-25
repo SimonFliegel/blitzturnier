@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/attendee_list.dart';
 import '../widgets/new_attendee.dart';
 
-import '../models/attendee.dart';
+import '../providers/attendee.dart';
 
 class AttendeeScreen extends StatefulWidget {
   final MediaQueryData mediaQuery;
-  final List<Attendee> attendees;
-  final Function addAttendee;
-  final Function delAttendee;
-  final Function incrScore;
-  final Function decrScore;
 
   const AttendeeScreen(
-    this.mediaQuery,
-    this.attendees,
-    this.addAttendee,
-    this.delAttendee,
-    this.incrScore,
-    this.decrScore, {
+    this.mediaQuery, {
     Key? key,
   }) : super(key: key);
 
   @override
   State<AttendeeScreen> createState() => _AttendeeScreenState();
+
+  void _createNewAttendee(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return GestureDetector(
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+            child: NewAttendee(
+                Provider.of<Attendees>(ctx, listen: false).addAttendee),
+          );
+        });
+  }
 }
 
 class _AttendeeScreenState extends State<AttendeeScreen> {
@@ -34,7 +38,7 @@ class _AttendeeScreenState extends State<AttendeeScreen> {
       title: const Text('Teilnehmerliste'),
       actions: <Widget>[
         IconButton(
-          onPressed: () => widget.addAttendee(context),
+          onPressed: () => widget._createNewAttendee(context),
           icon: const Icon(Icons.add),
         ),
       ],
@@ -46,13 +50,7 @@ class _AttendeeScreenState extends State<AttendeeScreen> {
         height: widget.mediaQuery.size.height -
             appBar.preferredSize.height -
             widget.mediaQuery.padding.top,
-        child: AttendeeList(
-          widget.mediaQuery,
-          widget.attendees,
-          widget.delAttendee,
-          widget.incrScore,
-          widget.decrScore,
-        ),
+        child: AttendeeList(widget.mediaQuery),
       ),
     );
   }

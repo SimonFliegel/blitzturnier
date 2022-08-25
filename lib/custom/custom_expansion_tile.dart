@@ -379,14 +379,16 @@ class _ExpansionTileState extends State<CustomExpansionPile>
             textColor: _headerColor.value,
             child: SizedBox(
               height: widget.height,
-              child: ListTile(
-                onTap: _handleTap,
-                contentPadding:
-                    widget.tilePadding ?? expansionTileTheme.tilePadding,
-                leading: widget.leading ?? _buildLeadingIcon(context),
-                title: widget.title,
-                subtitle: widget.subtitle,
-                trailing: widget.trailing ?? _buildTrailingIcon(context),
+              child: Center(
+                child: ListTile(
+                  onTap: _handleTap,
+                  contentPadding:
+                      widget.tilePadding ?? expansionTileTheme.tilePadding,
+                  leading: widget.leading ?? _buildLeadingIcon(context),
+                  title: widget.title,
+                  subtitle: widget.subtitle,
+                  trailing: widget.trailing ?? _buildTrailingIcon(context),
+                ),
               ),
             ),
           ),

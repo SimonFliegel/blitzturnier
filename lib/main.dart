@@ -1,6 +1,7 @@
 import 'package:blitzturnier/providers/attendee.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 import '/screens/tabs_screen.dart';
 
@@ -14,6 +15,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
     return MultiProvider(
       providers: [

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/attendee_list.dart';
 import '../widgets/new_attendee.dart';
+import '../widgets/attendee_entry.dart';
 
 import '../providers/attendee.dart';
 
@@ -34,6 +34,7 @@ class AttendeeScreen extends StatefulWidget {
 class _AttendeeScreenState extends State<AttendeeScreen> {
   @override
   Widget build(BuildContext context) {
+    final attendees = Provider.of<Attendees>(context).attendees;
     final AppBar appBar = AppBar(
       title: const Text('Teilnehmerliste'),
       actions: <Widget>[
@@ -50,7 +51,14 @@ class _AttendeeScreenState extends State<AttendeeScreen> {
         height: widget.mediaQuery.size.height -
             appBar.preferredSize.height -
             widget.mediaQuery.padding.top,
-        child: AttendeeList(widget.mediaQuery),
+        child: ListView.builder(
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
+          itemCount: attendees.length,
+          itemBuilder: (ctx, index) {
+            return AttendeeEntry(widget.mediaQuery, attendees[index]);
+          },
+        ),
       ),
     );
   }

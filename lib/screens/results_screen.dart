@@ -62,10 +62,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
             parent: AlwaysScrollableScrollPhysics()),
         itemCount: rankedAttendees.length,
         itemBuilder: (context, index) {
-          return SizedBox(
-            height: widget.mediaQuery.size.height * 0.146,
-            child: Card(
-              elevation: 3,
+          return Card(
+            elevation: 3,
+            child: SizedBox(
+              height: widget.mediaQuery.size.height * 0.1325,
               child: Center(
                 child: ListTile(
                   leading: Padding(

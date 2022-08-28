@@ -65,7 +65,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
           return Card(
             elevation: 3,
             child: SizedBox(
-              height: widget.mediaQuery.size.height * 0.1325,
+              height: widget.mediaQuery.size.height * 0.1125,
               child: Center(
                 child: ListTile(
                   leading: Padding(
@@ -97,10 +97,16 @@ class _ResultsScreenState extends State<ResultsScreen> {
     return rankedAttendees.isNotEmpty
         ? Scaffold(
             appBar: AppBar(
-              title: const Text('Ergebnisse'),
+              title: const Text(
+                'Ergebnisse',
+                style: TextStyle(fontSize: 26),
+              ),
+              toolbarHeight: widget.mediaQuery.size.height * 0.08,
               actions: <Widget>[
                 IconButton(
+                  padding: EdgeInsets.all(widget.mediaQuery.size.width * 0.04),
                   icon: const Icon(Icons.import_export),
+                  iconSize: widget.mediaQuery.size.width * 0.09,
                   onPressed: () {
                     setState(() {
                       isReversed = !isReversed;
@@ -114,7 +120,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 : buildResultsList(rankedAttendees))
         : Scaffold(
             appBar: AppBar(
-              title: const Text('Ergebnisse'),
+              title: const Text(
+                'Ergebnisse',
+                style: TextStyle(fontSize: 26),
+              ),
+              toolbarHeight: widget.mediaQuery.size.height * 0.08,
             ),
             body: Center(
               child: Column(

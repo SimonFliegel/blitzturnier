@@ -32,15 +32,25 @@ class AttendeeScreen extends StatefulWidget {
 }
 
 class _AttendeeScreenState extends State<AttendeeScreen> {
+  late int selected;
+
   @override
   Widget build(BuildContext context) {
     final attendees = Provider.of<Attendees>(context).attendees;
     final AppBar appBar = AppBar(
-      title: const Text('Teilnehmerliste'),
+      title: const Text(
+        'Teilnehmerliste',
+        style: TextStyle(
+          fontSize: 26,
+        ),
+      ),
+      toolbarHeight: widget.mediaQuery.size.height * 0.08,
       actions: <Widget>[
         IconButton(
-          onPressed: () => widget._createNewAttendee(context),
+          padding: EdgeInsets.all(widget.mediaQuery.size.width * 0.03),
+          iconSize: widget.mediaQuery.size.width * 0.09,
           icon: const Icon(Icons.add),
+          onPressed: () => widget._createNewAttendee(context),
         ),
       ],
     );

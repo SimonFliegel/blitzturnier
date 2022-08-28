@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/attendee.dart';
 import '../custom/custom_expansion_tile.dart';
+import '../widgets/delete_dialog.dart';
 
 class AttendeeEntry extends StatefulWidget {
   final MediaQueryData mediaQuery;
@@ -25,7 +26,7 @@ class _AttendeeEntryState extends State<AttendeeEntry> {
     return Card(
       elevation: 3,
       child: CustomExpansionPile(
-        height: widget.mediaQuery.size.height * 0.13,
+        height: widget.mediaQuery.size.height * 0.11,
         title: SizedBox(
           child: Row(
             children: [
@@ -87,9 +88,15 @@ class _AttendeeEntryState extends State<AttendeeEntry> {
                 padding:
                     EdgeInsets.only(left: widget.mediaQuery.size.width * 0.25),
                 child: TextButton.icon(
-                  onPressed: () => attendeeData.deleteAttendee(widget.attendee),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (ctx) => DeleteDialog(
+                            widget.attendee, attendeeData.deleteAttendee));
+                    // attendeeData.deleteAttendee(widget.attendee);
+                  },
                   icon: const Icon(Icons.delete),
-                  label: const Text('Delete'),
+                  label: const Text('Entfernen'),
                   style: ButtonStyle(
                     foregroundColor:
                         MaterialStateProperty.all(Theme.of(context).errorColor),

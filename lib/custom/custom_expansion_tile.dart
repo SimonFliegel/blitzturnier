@@ -41,13 +41,12 @@ class CustomExpansionPile extends StatefulWidget {
   /// Creates a single-line [ListTile] with an expansion arrow icon that expands or collapses
   /// the tile to reveal or hide the [children]. The [initiallyExpanded] property must
   /// be non-null.
-  final double height;
 
   const CustomExpansionPile({
     Key? key,
     this.leading,
-    required this.height,
     required this.title,
+    required this.height,
     this.subtitle,
     this.onExpansionChanged,
     this.children = const <Widget>[],
@@ -86,6 +85,9 @@ class CustomExpansionPile extends StatefulWidget {
   ///
   /// Typically a [Text] widget.
   final Widget title;
+
+  /// [Customly added] Height in collapsed state.
+  final double height;
 
   /// Additional content displayed below the title.
   ///
